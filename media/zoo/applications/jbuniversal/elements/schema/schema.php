@@ -176,10 +176,12 @@ class ElementSchema  extends Element
         $JBZooTeaserText = $JBZooTeaserText->find('0.value', $CategoryPrimaryName.' '.$ItemName);
         $JBZooTeaserText = trim(strip_tags($JBZooTeaserText));
         
+        if($ogtype_enabled == 1):
         $OGJBZooTeaserText = $this->_item->getElement($ogtype_text_def)->data();
         $OGJBZooTeaserText = $this->app->data->create($OGJBZooTeaserText);
         $OGJBZooTeaserText = $OGJBZooTeaserText->find('0.value', NULL);
         $OGJBZooTeaserText = trim(strip_tags($OGJBZooTeaserText));
+        endif;
         
         if ($Brand_mode != 2 && $Brand_mode != 4 && NULL !== $JBZooElBrand) {
             
