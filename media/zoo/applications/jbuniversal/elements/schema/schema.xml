@@ -281,7 +281,7 @@
             description="Технология разметки"
             label="Технология разметки"
             name="razmetka_tech_mode"
-            type="List">
+            type="list">
             <option value="0">только JSON+LD (Schema.org: Product + offers)
             </option>
             <option value="1">только Microdata (HTML Schema.org: Product + offers)</option>
