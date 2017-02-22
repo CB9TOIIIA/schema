@@ -47,7 +47,7 @@
             name="price_mode"
             type="radio">
             <option value="0">JBpricePlain</option>
-            <option value="1">JBpriceCalc [скоро...]</option>
+            <option value="1">JBpriceCalc</option>
             <option value="2">Вручную по ID элемента</option>
         </param>
         <param
