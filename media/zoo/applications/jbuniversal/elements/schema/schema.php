@@ -63,15 +63,6 @@ class ElementSchema  extends Element
         
         // dump($this->config,0,'$this->config');
         
-        function myLoveDumpNoScript($data) {
-            echo '<h2>Debug ON</h2>';
-            echo '<pre>';
-            echo '<textarea style="width: 90%; height: 550px;" rows="100" cols="150">';
-            echo  $data;
-            echo '</textarea>';
-            echo '</pre>';
-        }
-        
         // ФОТО
         
         if ($Photo_mode == 0) {
@@ -171,16 +162,28 @@ class ElementSchema  extends Element
         
         $ItemName = $this->_item->name;
         
-        $JBZooTeaserText = $this->_item->getElement($JBZooElTextteaser)->data();
-        $JBZooTeaserText = $this->app->data->create($JBZooTeaserText);
-        $JBZooTeaserText = $JBZooTeaserText->find('0.value', $CategoryPrimaryName.' '.$ItemName);
-        $JBZooTeaserText = trim(strip_tags($JBZooTeaserText));
+        
+        $JBZooTeaserText = NULL;
+        if ($Textteaser_mode == 1 || $Textteaser_mode == 2) {
+            $JBZooTeaserText = $this->_item->getElement($JBZooElTextteaser)->data();
+            $JBZooTeaserText = $this->app->data->create($JBZooTeaserText);
+            $JBZooTeaserText = $JBZooTeaserText->find('0.value', $CategoryPrimaryName.' '.$ItemName);
+            $JBZooTeaserText = trim(strip_tags($JBZooTeaserText));
+        }
+        
         
         if($ogtype_enabled == 1):
-        $OGJBZooTeaserText = $this->_item->getElement($ogtype_text_def)->data();
-        $OGJBZooTeaserText = $this->app->data->create($OGJBZooTeaserText);
-        $OGJBZooTeaserText = $OGJBZooTeaserText->find('0.value', NULL);
-        $OGJBZooTeaserText = trim(strip_tags($OGJBZooTeaserText));
+        
+        if(NULL !== $this->_item->getElement($ogtype_text_def)){
+            $OGJBZooTeaserText = $this->_item->getElement($ogtype_text_def)->data();
+            $OGJBZooTeaserText = $this->app->data->create($OGJBZooTeaserText);
+            $OGJBZooTeaserText = $OGJBZooTeaserText->find('0.value', NULL);
+            $OGJBZooTeaserText = trim(strip_tags($OGJBZooTeaserText));
+        }
+        else {
+            $OGJBZooTeaserText = NULL;
+        }
+        
         endif;
         
         if ($Brand_mode != 2 && $Brand_mode != 4 && NULL !== $JBZooElBrand) {
@@ -215,7 +218,6 @@ class ElementSchema  extends Element
         if($ogtype_url_show == 1) {       $docshema->setMetaData('og:url', $this->app->jbrouter->externalItem($this->_item));  }
         if($ogtype_image_show == 1) {     $docshema->setMetaData('og:image', $JBZooPhoto ); }
         if($ogtype_site_name_show == 1) { $docshema->setMetaData('og:site_name', JFactory::getApplication()->getCfg('sitename') ); }
-        
         $JBZooOgTags = $docshema->_metaTags['name'];
         
         // dump($docshema,0,'docshema');
@@ -335,9 +337,24 @@ class ElementSchema  extends Element
         
         if ($JBZoo_el_debug == 1) {
             
-            myLoveDumpNoScript($JBZooOgTags);
-            myLoveDumpNoScript($schemaproduct);
-            myLoveDumpNoScript($shemamicrodata);
+            echo '<h2>Debug ON JBZooOgTags</h2>';
+            echo '<pre>';
+            echo '<textarea style="width: 90%; height: 550px;" rows="100" cols="150">';
+            echo  @$JBZooOgTags;
+            echo '</textarea>';
+            echo '</pre>';
+            echo '<h2>Debug ON schemaproduct</h2>';
+            echo '<pre>';
+            echo '<textarea style="width: 90%; height: 550px;" rows="100" cols="150">';
+            echo  @$schemaproduct;
+            echo '</textarea>';
+            echo '</pre>';
+            echo '<h2>Debug ON shemamicrodata</h2>';
+            echo '<pre>';
+            echo '<textarea style="width: 90%; height: 550px;" rows="100" cols="150">';
+            echo  @$shemamicrodata;
+            echo '</textarea>';
+            echo '</pre>';
             
         }
         
