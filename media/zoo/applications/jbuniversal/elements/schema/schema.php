@@ -161,14 +161,19 @@ class ElementSchema  extends Element
         $CategoryPrimaryName = $CategoryPrimaryObj->name;
         
         $ItemName = $this->_item->name;
-        
+        $ItemName = strip_tags(trim($ItemName));
+        $ItemName = str_replace('"','',$ItemName);
+        $ItemName = str_replace("'","",$ItemName);
         
         $JBZooTeaserText = NULL;
-        if ($Textteaser_mode == 1 || $Textteaser_mode == 2) {
+        if ($Textteaser_mode == 0 || $Textteaser_mode == 1 || $Textteaser_mode == 2) {
             $JBZooTeaserText = $this->_item->getElement($JBZooElTextteaser)->data();
             $JBZooTeaserText = $this->app->data->create($JBZooTeaserText);
             $JBZooTeaserText = $JBZooTeaserText->find('0.value', $CategoryPrimaryName.' '.$ItemName);
             $JBZooTeaserText = trim(strip_tags($JBZooTeaserText));
+        }
+        else {
+             $JBZooTeaserText = $Teasertextsimpletext;
         }
         
         
