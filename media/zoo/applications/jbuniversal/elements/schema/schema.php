@@ -315,7 +315,7 @@ class ElementSchema  extends Element
         <span itemprop='price'>{$JBZooPrice}</span>
         
         <!--В поле priceCurrency указывается валюта.-->
-        <span itemprop='priceCurrency'>RUB</span>
+        <span itemprop='priceCurrency'>{$Valuta}</span>
         
         <div>В наличии</div>
         <link itemprop='availability' href='http://schema.org/InStock'>
