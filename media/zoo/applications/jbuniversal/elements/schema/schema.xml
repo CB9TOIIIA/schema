@@ -6,7 +6,7 @@
     <copyright>Copyright (C) CB9TOIIIA</copyright>
     <authoremail>cb9toiiia@gmail.com</authoremail>
     <authorurl>http://CB9T.ru</authorurl>
-    <version>1.10.0</version>
+    <version>1.0.0</version>
     <description>Schema разметки для JBZoo // CB9TOIIIA
     </description>
     <params>
@@ -75,6 +75,15 @@
             description="Убрать копейки у цены"
             label="Убрать копейки у цены?"
             name="jbprice_kop_enabled"
+            type="radio">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </param>
+        <param
+            default="0"
+            description="Отображать цену со скидкой"
+            label="Отображать цену со скидкой?"
+            name="JBZooPriceWithDiscount_enabled"
             type="radio">
             <option value="0">JNO</option>
             <option value="1">JYES</option>

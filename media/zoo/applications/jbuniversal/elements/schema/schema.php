@@ -35,6 +35,7 @@ class ElementSchema  extends Element
         $Pricejbpricecalc = $this->config->get('jbpricecalc');
         $PriceElementId = $this->config->get('PriceElementId');
         $JBprice_kop_enabled = $this->config->get('jbprice_kop_enabled');
+        $JBZooPriceWithDiscount_enabled = $this->config->get('JBZooPriceWithDiscount_enabled');
         $Brand_mode = $this->config->get('brand_mode');
         $BrandListElementId = $this->config->get('brandListElementId');
         $BrandElementId = $this->config->get('brandElementId');
@@ -149,7 +150,8 @@ class ElementSchema  extends Element
         $JBZooPrice = $this->_item->getElement($JBZooElPrice)->data()->variations;
         $JBZooElPrice = $this->app->data->create($JBZooPrice);
         $JBZooPrice = $JBZooElPrice->find('0._value.value', 'Уточняйте по телефону');
-        
+
+
         if (!empty($JBZooPrice)) {
             $CB_Balance = $JBZooElPrice->find('0._balance.value');
         }
@@ -170,7 +172,27 @@ class ElementSchema  extends Element
         if ($JBprice_kop_enabled == 1) {
             $JBZooPrice = round($JBZooPrice,0);
         }
+
+
+        if ($JBZooPriceWithDiscount_enabled == 1) {
+
+            $JBZooPriceWithDiscount = $JBZooElPrice->find('0._discount.value');
+            $pregpercent = preg_match('/%/',$JBZooPriceWithDiscount,$pregpercent);
+
+            if ($pregpercent == 1) {
+                $JBZooPriceWithDiscount = str_replace('%','',$JBZooPriceWithDiscount);
+                $JBZooPrice = $JBZooPrice * $JBZooPriceWithDiscount / 100;
+            }
+
+            else {
+                $JBZooPrice = $JBZooPrice - $JBZooPriceWithDiscount;
+            }
         
+        }
+    
+
+
+
         $JBZooSkuItem = $JBZooElPrice->find('0._sku.value', 'Артикул не найден');
         
         $CategoryPrimaryId = $this->_item->getParams()->get('config.primary_category');
