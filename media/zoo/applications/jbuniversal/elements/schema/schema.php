@@ -149,7 +149,15 @@ class ElementSchema  extends Element
         $JBZooPrice = $this->_item->getElement($JBZooElPrice)->data()->variations;
         $JBZooElPrice = $this->app->data->create($JBZooPrice);
         $JBZooPrice = $JBZooElPrice->find('0._value.value', 'Уточняйте по телефону');
-        
+
+        $money = JBCart::val($JBZooElPrice);
+        $Valuta = $money->cur();
+
+        if ($Valuta == "rub") { $Valuta = "RUB"; }
+        if ($Valuta == "usd") { $Valuta = "USD"; }
+        if ($Valuta == "eur") { $Valuta = "EUR"; }
+
+
         if ($JBprice_kop_enabled == 1) {
             $JBZooPrice = round($JBZooPrice,0);
         }
@@ -278,7 +286,7 @@ class ElementSchema  extends Element
             "offers": {
                 "@type": "Offer",
                 "price": "'.$JBZooPrice.'",
-                "priceCurrency": "RUB",
+                "priceCurrency":  "'.$Valuta.'",
                 "availability": "Есть в наличии"
             }
         }
