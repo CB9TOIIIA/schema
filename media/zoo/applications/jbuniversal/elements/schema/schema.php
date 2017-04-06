@@ -149,8 +149,17 @@ class ElementSchema  extends Element
         $JBZooPrice = $this->_item->getElement($JBZooElPrice)->data()->variations;
         $JBZooElPrice = $this->app->data->create($JBZooPrice);
         $JBZooPrice = $JBZooElPrice->find('0._value.value', 'Уточняйте по телефону');
+        
+        if (!empty($JBZooPrice)) {
+            $CB_Balance = $JBZooElPrice->find('0._balance.value');
+        }
+   
+        if ($CB_Balance == "-1") { $CB_Balance = "Есть в наличии"; }
+        if ($CB_Balance == "-2") { $CB_Balance = "Под заказ"; }
+        if ($CB_Balance > 0 || NULL == $CB_Balance) { $CB_Balance = $CB_Balance; }
+        if (empty($CB_Balance)) { $CB_Balance = "Под заказ"; }
 
-        $money = JBCart::val($JBZooElPrice);
+        $money = JBCart::val($JBZooPrice);
         $Valuta = $money->cur();
 
         if ($Valuta == "rub") { $Valuta = "RUB"; }
@@ -205,6 +214,9 @@ class ElementSchema  extends Element
             $JBZooBrand = $this->app->data->create($JBZooBrand);
             $JBZooBrand = $JBZooBrand->find('0.value', $CategoryPrimaryName.' '.$ItemName);
             $JBZooBrand = trim(strip_tags($JBZooBrand));
+            if (!empty($JBZooBrand)) {
+                 $JBZooBrand = $this->_item->getElement($JBZooElBrand)->render();
+            }
             
         }
         else {
@@ -217,7 +229,9 @@ class ElementSchema  extends Element
             $JBZooManufacturer = $this->app->data->create($JBZooManufacturer);
             $JBZooManufacturer = $JBZooManufacturer->find('0.value', $CategoryPrimaryName.' '.$ItemName);
             $JBZooManufacturer = trim(strip_tags($JBZooManufacturer));
-            
+             if (!empty($JBZooManufacturer)) {
+                 $JBZooManufacturer = $this->_item->getElement($JBZooElManufacturer)->render();
+            }
         }
         else {
             $JBZooManufacturer = $JBZooElManufacturer;
@@ -287,7 +301,7 @@ class ElementSchema  extends Element
                 "@type": "Offer",
                 "price": "'.$JBZooPrice.'",
                 "priceCurrency":  "'.$Valuta.'",
-                "availability": "Есть в наличии"
+                "availability": "'.$CB_Balance.'"
             }
         }
         </script>';
@@ -317,7 +331,7 @@ class ElementSchema  extends Element
         <!--В поле priceCurrency указывается валюта.-->
         <span itemprop='priceCurrency'>{$Valuta}</span>
         
-        <div>В наличии</div>
+        <div>{$CB_Balance}</div>
         <link itemprop='availability' href='http://schema.org/InStock'>
         
         </div>
