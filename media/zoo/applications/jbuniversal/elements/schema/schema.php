@@ -181,7 +181,7 @@ class ElementSchema  extends Element
 
             if ($pregpercent == 1) {
                 $JBZooPriceWithDiscount = str_replace('%','',$JBZooPriceWithDiscount);
-                $JBZooPrice = $JBZooPrice * $JBZooPriceWithDiscount / 100;
+                $JBZooPrice =  $JBZooPrice - ($JBZooPrice * ($JBZooPriceWithDiscount / 100));
             }
 
             else {
@@ -189,9 +189,6 @@ class ElementSchema  extends Element
             }
         
         }
-    
-
-
 
         $JBZooSkuItem = $JBZooElPrice->find('0._sku.value', 'Артикул не найден');
         
